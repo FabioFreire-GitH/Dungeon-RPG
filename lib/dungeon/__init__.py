@@ -64,14 +64,7 @@ def gerar_sala(cenario):
     nome_sala = choice(list(cenario['salas'].keys())) 
     sala = cenario['salas'][nome_sala]
     return nome_sala, sala
-'''
-testei no main
-cen = gerar_cenario()
-print (cen[1])
-sala = gerar_sala(cen[1])
-print()
-print(sala)
-'''
+
 
 def explorar_dungeon(ficha):
     nome_cenario, cenario = gerar_cenario() # gera o cenario e retorna o nome e o dicionario do cenario - desempacotando a tupla
@@ -101,85 +94,4 @@ def explorar_dungeon(ficha):
         print('\nPressione um tecla avançar para a proxima Sala!')
         getch()
     return True
-
-
-# ============================================
-# FASE 2.2 — CONTEXTO DE SALAS
-#
-# OBJETIVO:
-# Criar um sistema de ambientes para influenciar
-# loot, raridade e eventos da dungeon.
-#
-# PLANO:
-#
-# [ ] Criar gerar_sala()
-#     -> sorteia tipo de ambiente
-#
-# [ ] Cada sala deve definir:
-#     - nome
-#     - categorias de tesouro
-#     - bonus de raridade
-#     - eventos possíveis
-#
-# Estrutura sugerida:
-#
-# sala = {
-#     'nome': 'Aposento',
-#     'categorias': ['Joias', 'Objetos Valiosos'],
-#     'bonus_raridade': 10
-# }
-#
-# Fluxo futuro:
-#
-# explorar_dungeon()
-#     -> gerar_sala()
-#     -> gerar_evento()
-#     -> gerar_tesouro(sala['categorias'], sala['bonus_raridade'])
-#
-# Expansões futuras:
-#
-# [ ] Salas secretas
-# [ ] Salas de boss
-# [ ] Armadilhas especiais
-# [ ] NPCs
-# [ ] Lojas
-# [ ] Altares
-# [ ] Eventos únicos
-# ============================================
-'''
-Pequena melhoria de responsabilidade
-
-Hoje:
-
-system('cls')
-print(...)
-getch()
-
-estão dentro da dungeon.
-
-Funciona.
-
-Mas pense:
-
-isso é lógica de interface.
-
-Não de dungeon.
-
-Dungeon deveria pensar:
-
-sala atual
-evento
-resultado
-
-Não em:
-
-limpar tela
-esperar tecla
-
-Mas isso é aceitável no seu estágio.
-
-Não moveria agora.
-
-Só marca
-'''
 
