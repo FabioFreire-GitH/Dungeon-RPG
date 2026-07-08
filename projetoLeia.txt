@@ -1,0 +1,336 @@
+* Variáveis
+* Condições (`if`)
+* Repetições (`while`, `for`)
+* Listas
+* Tuplas
+* Dicionários
+* Funções
+* `random`
+* Manipulação básica de strings
+
+já é possível construir uma **primeira versão funcional** do projeto.
+
+---
+
+# Objetivo da Fase 1
+
+Criar um jogo que tenha início, meio e fim.
+
+Não precisa ser bonito.
+Não precisa ser complexo.
+
+Precisa ser jogável.
+
+---
+
+# Visão Geral
+
+```text
+MENU
+
+↓
+CRIAR PERSONAGEM
+
+↓
+ENTRAR NA DUNGEON
+
+↓
+EXPLORAR SALAS
+
+↓
+EVENTOS
+
+↓
+SAIR VIVO OU MORRER
+
+↓
+RELATÓRIO FINAL
+```
+
+---
+
+# Estrutura do Projeto
+
+Eu dividiria mentalmente em 5 blocos.
+
+## Bloco 1 — Personagem
+
+Responsável por armazenar:
+
+```text
+Nome
+Vida
+Ouro
+```
+
+Por enquanto apenas isso.
+
+Exemplo:
+
+```text
+Nome: Fabio
+Vida: 100
+Ouro: 0
+```
+
+---
+
+## Bloco 2 — Menu Principal
+
+Algo simples:
+
+```text
+=================
+DUNGEON RPG
+=================
+
+1 - Novo Jogo
+2 - Sair
+```
+
+Nada mais.
+
+---
+
+## Bloco 3 — Dungeon
+
+Aqui vem a primeira decisão importante.
+
+Em vez de criar um mapa, vamos criar uma sequência de salas.
+
+Exemplo:
+
+```text
+Sala 1
+Sala 2
+Sala 3
+Sala 4
+Sala 5
+```
+
+Você pode armazenar:
+
+```text
+quantidade de salas
+```
+
+Por exemplo:
+
+```text
+5 salas
+```
+
+---
+
+## Bloco 4 — Eventos
+
+Cada sala sorteia um evento.
+
+Sugestão:
+
+```text
+Nada
+Tesouro
+Armadilha
+Monstro
+```
+
+Exemplo:
+
+```text
+Você encontrou um tesouro.
++10 ouro
+```
+
+ou
+
+```text
+Você caiu numa armadilha.
+-15 vida
+```
+
+---
+
+## Bloco 5 — Encerramento
+
+Ao terminar todas as salas:
+
+```text
+A aventura terminou.
+
+Vida restante: 72
+Ouro obtido: 50
+```
+
+---
+
+# Primeira Estrutura de Funções
+
+Ainda sem escrever código.
+
+Pense em funções com responsabilidades claras.
+
+```text
+criar_personagem()
+
+mostrar_status()
+
+gerar_evento()
+
+explorar_dungeon()
+
+encerrar_jogo()
+```
+
+---
+
+# O Fluxo Principal
+
+Visualmente:
+
+```text
+Novo jogo
+
+↓
+Criar personagem
+
+↓
+Entrar dungeon
+
+↓
+Enquanto houver salas
+
+    Mostrar sala
+
+    Gerar evento
+
+    Atualizar vida/ouro
+
+↓
+Fim
+
+↓
+Mostrar resultado
+```
+
+---
+
+# Sobre a Dungeon
+
+Nesta primeira versão eu NÃO faria caminhos.
+
+Nada de:
+
+```text
+Esquerda
+Direita
+Norte
+Sul
+```
+
+Ainda.
+
+Faça primeiro:
+
+```text
+Sala 1
+
+pressione ENTER
+
+evento
+
+↓
+
+Sala 2
+
+pressione ENTER
+
+evento
+
+↓
+
+Sala 3
+```
+
+---
+
+# Sobre os Eventos
+
+Uma ideia interessante:
+
+Criar uma tabela.
+
+```text
+1 = Nada
+
+2 = Tesouro Pequeno
+
+3 = Tesouro Grande
+
+4 = Armadilha
+
+5 = Monstro Fraco
+```
+
+E usar:
+
+```python
+random.randint()
+```
+
+que você já está utilizando nos exercícios.
+
+---
+
+# Condição de Derrota
+
+Muito importante.
+
+A qualquer momento:
+
+```text
+Vida <= 0
+```
+
+fim de jogo.
+
+---
+
+# Condição de Vitória
+
+Terminou todas as salas.
+
+Simples assim.
+
+---
+
+# O que eu faria hoje
+
+Antes de abrir o VS Code, escreveria numa folha ou arquivo de texto:
+
+```text
+PERSONAGEM
+- nome
+- vida
+- ouro
+
+DUNGEON
+- quantidade de salas
+
+EVENTOS
+- nada
+- tesouro
+- armadilha
+- monstro
+
+FIM
+- vitória
+- derrota
+```
+
+Esse documento será seu "manual do projeto".
+
+Quanto mais o projeto crescer, mais ele vai te ajudar.
+
+---
+
