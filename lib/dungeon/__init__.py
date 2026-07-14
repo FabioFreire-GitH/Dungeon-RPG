@@ -3,7 +3,7 @@ from time import sleep
 from msvcrt import getch
 from lib.evento import *
 from lib.interface import *
-from .mapa import dungeon_mapa
+from .mapa import *
 
 '''
 def gerar_cenario():

@@ -144,7 +144,7 @@ Dungeon-RPG/
 
 ---
 
-## 🚧 Fase 2.5 — Dungeon Estruturada
+## ✅ Fase 2.5 — Dungeon Estruturada
 
 Objetivos:
 
@@ -155,7 +155,7 @@ Objetivos:
 * Estado permanente das salas
 * Preparar arquitetura para mapas completos
 
-🔄 Em andamento
+✔ Concluída
 
 ---
 
