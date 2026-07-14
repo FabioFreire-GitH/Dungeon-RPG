@@ -6,6 +6,7 @@ def mostra_inventario(ficha):
     cabeçalho('INVENTÁRIO')
     if len(ficha['inventario']) == 0:
         print('Mocilha Vazia!')
+        return False
     else:
         c = 1
         for item in ficha['inventario']:
@@ -18,17 +19,19 @@ def mostra_inventario(ficha):
         print(linha())
         opc = leiaInt('Escolha um item para Usar (0 para voltar): ')
         if opc == 0:
-            return
+            return False
         elif 1 <= opc <= len(ficha['inventario']):
             item = ficha['inventario'][opc - 1]
             if item['tipo'] in ('arma','armadura'):
-                equipar_item(ficha, item)
+                return equipar_item(ficha, item)
             elif item['tipo'] == 'cura':
-                usar_item_cura(ficha, item)
+                return usar_item_cura(ficha, item)
             else:
                 print('Este item não pode ser usado.')
+                return False
         else:
             print('Opção inválida!')
+            return False
     print(linha())
 
 
@@ -55,10 +58,13 @@ def usar_item_cura(ficha, item):
             ficha['vida'] += item['efeito']
             remover_item(ficha,item)
             print(f'Você usou {item["nome"]} e recuperou {item["efeito"]} de Vida!')
+            return True
         else:
             print('Item não usado!')
+            return False
     else:
         print('Não é possivel usar este item!')
+        return False
 
 
 def mostra_equipamentos(ficha):
@@ -92,8 +98,10 @@ def equipar_item(ficha, item):
             ficha['equipamento']['arma'] = item
             ficha['força'] += item['efeito']  # Adiciona o bônus da nova arma
             print(f'Você equipou a {item["nome"]} e ganhou {item["efeito"]} de Força!')
+            return True
         else:
             print('Equipamento não alterado.')
+            return False
     elif ficha['equipamento']['armadura'] is not None and item['tipo'] == 'armadura':
         print(f'Você já tem uma armadura equipada: {ficha["equipamento"]["armadura"]}. Deseja substituir? (s/n)')
         resposta = input().lower()
@@ -107,18 +115,22 @@ def equipar_item(ficha, item):
             ficha['equipamento']['armadura'] = item
             ficha['defesa'] += item['efeito']  # Adiciona o bônus da nova armadura
             print(f'Você equipou a {item["nome"]} e ganhou {item["efeito"]} de Defesa!')
+            return True
 
         else:
             print('Equipamento não alterado.')
+            return False
     else:
         if item['tipo'] == 'arma':
             remover_item(ficha, item)
             ficha['equipamento']['arma'] = item
             ficha['força'] += item['efeito']
             print(f'Você equipou a {item["nome"]} e ganhou {item["efeito"]} de Força!')
+            return True
         
         elif item['tipo'] == 'armadura':
             remover_item(ficha, item)
             ficha['equipamento']['armadura'] = item
             ficha['defesa'] += item['efeito']
             print(f'Você equipou a {item["nome"]} e ganhou {item["efeito"]} de Defesa!')
+            return True

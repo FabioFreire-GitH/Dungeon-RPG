@@ -1,6 +1,7 @@
 from msvcrt import getch
 from lib.interface import *
 from lib.itens import *
+from lib.dungeon.mapa import *
 
 def criar_personagem():
     ficha = dict()
@@ -14,6 +15,7 @@ def criar_personagem():
             ficha['ouro'] = 0
             ficha['inventario'] = []
             ficha['equipamento'] = {'arma': None, 'armadura': None}
+            ficha['mapa'] = gerar_dungeon_mapa()
             print(f'\nHeroi {ficha["nome"]} Criado!')
             print('\nPressione qualque tecla para continuar...')
             getch()

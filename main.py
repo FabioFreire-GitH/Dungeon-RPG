@@ -6,10 +6,10 @@ from lib.jogo import*
 
 #Programa Principal
 while True:
-    system('cls')
+    limpa_tela()
     resposta = menu('DUNGEON RPG: MENU PRINCIPAL',['Novo Jogo','Sair'])
     if resposta == 1:
-        system('cls')
+        limpa_tela()
         cabeçalho('CRIAR PERSONAGEM')
         ficha = criar_personagem()
         hud_jogo(ficha)
@@ -17,7 +17,7 @@ while True:
         cabeçalho('SAINDO DO JOGO...')
         break
     else:
-        system('cls')
+        limpa_tela()
         cabeçalho('Digite um opção Valida!')
         sleep(2) 
 

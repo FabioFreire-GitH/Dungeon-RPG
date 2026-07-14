@@ -1,4 +1,4 @@
-from os import system
+from os import system, name 
 from msvcrt import getch
 from sys import stdout
 from time import sleep
@@ -36,7 +36,8 @@ def menu(titulo, lista):
 
 
 def limpa_tela():
-    system('cls')#melhorar para verificar qual sistema operacional
+    comando = 'cls' if name == 'nt' else 'clear'
+    system(comando)
 
 
 def tecla_seguir():

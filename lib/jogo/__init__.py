@@ -3,11 +3,12 @@ from msvcrt import getch
 from lib.dungeon import *
 from lib.personagem import *
 from lib.itens import *
+from lib.interface import *
 
 
 def hud_jogo(ficha):
     while True:
-        system('cls')
+        limpa_tela()
         resposta = menu('MENU DO JOGADOR', ['Explorar Dungeon', 'Vericar Status','Lista de Inventário','Lista Equipamentos' , 'Sair'])
         if resposta == 1:
             resultado_final = explorar_dungeon(ficha)

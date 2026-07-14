@@ -41,12 +41,13 @@ def evento_armadilha(ficha):
         return True
 
 
-def evento_monstro(ficha):
+def evento_monstro(ficha, monstro):
     vida_inimigo = randint(3,5)*10
+    nome_monstro = monstro
     print('''
             => Um MONSTRO!!! 
             => A Criatura está Furiosa e pronta para Atacar.
           
             => PREPARE-SE!        
           ''')
-    return combate(ficha, vida_inimigo)
+    return combate(ficha, vida_inimigo, nome_monstro)

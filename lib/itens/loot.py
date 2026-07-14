@@ -125,7 +125,7 @@ def gerar_tesouro(tipo_tesouro, bonus_sala=0):
 
 
 def gerar_loot(sala, bonus_pericia=0):# controla o loot por sala
-    sorteio_loot = choice(sala['loot'])
+    sorteio_loot = choice(sala['itens'])
     if sorteio_loot == 'nada':
         print('Nada encontrado nesta sala.')
         return None

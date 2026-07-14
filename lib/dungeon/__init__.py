@@ -71,9 +71,9 @@ def gerar_sala(cenario):
 def explorar_dungeon(ficha):
     current_room_id = 1 # Começamos na sala com ID 1
     while True:
-        system('cls')
+        limpa_tela()
         # Obter a sala atual do mapa
-        sala_atual = dungeon_mapa[current_room_id]
+        sala_atual = ficha['mapa'][current_room_id]
         
         if not sala_atual['visitada']: # Se a sala ainda não foi visitada
             pergaminho(f"Ao adentrar o {sala_atual['nome']}, você observa o ambiente...") 
@@ -114,7 +114,7 @@ def explorar_dungeon(ficha):
                     # Apenas para exibição, escolhe um nome de monstro da lista da sala
                     nome_monstro_display = choice([m for m in sala_atual['monstros'] if m != 'nada']) 
                     print(f"\nVocê encontra um {nome_monstro_display} no caminho!") 
-                    resultado = evento_monstro(ficha) # Inicia o combate (evento_monstro usa monstro genérico por enquanto)
+                    resultado = evento_monstro(ficha, nome_monstro_display) # Inicia o combate (evento_monstro usa monstro genérico por enquanto)
                     if not resultado: # Se o jogador morrer no combate
                         print('\n==>O Herói MORREU!\n') 
                         tecla_seguir()
@@ -122,9 +122,9 @@ def explorar_dungeon(ficha):
                     else:
                         print(f'\nVocê derrotou o {nome_monstro_display}!')
                         if nome_monstro_display in sala_atual['monstros']:
-                            sala_atual['mosntros'].remove(nome_monstro_display)
-                            if sala_atual['mosntros'] is None:
-                                sala_atual['mosntros'] = 'Nada'
+                            sala_atual['monstros'].remove(nome_monstro_display)
+                            if sala_atual['monstros'] is None:
+                                sala_atual['monstros'] = 'Nada'
                         tecla_seguir()
                         # Futuramente: Adicionar lógica aqui para remover o monstro derrotado
                         # de `sala_atual['monstros']` para que ele não reapareça.
@@ -143,15 +143,15 @@ def explorar_dungeon(ficha):
             tecla_seguir()
 
         # Limpa a tela novamente para o menu de navegação, após os eventos
-        system('cls') 
-        cabeçalho(f'{sala_atual['nome']}')
+        limpa_tela()
+        cabeçalho(f"{sala_atual['nome']}")
         pergaminho(sala_atual['descricao'])
         print("\nPara onde você deseja ir?")
         opcoes_movimento = []
         for direcao, proxima_sala_id in sala_atual['conexoes'].items():
             if proxima_sala_id is not None:
                 # Se a sala conectada existir no mapa, mostre o nome dela
-                nome_proxima_sala = dungeon_mapa[proxima_sala_id]['nome']
+                nome_proxima_sala = ficha['mapa'][proxima_sala_id]['nome']
                 opcoes_movimento.append(f"{direcao.capitalize()} ({nome_proxima_sala})")
         
         opcoes_movimento.append("Sair da Dungeon")
@@ -167,9 +167,9 @@ def explorar_dungeon(ficha):
             direcao_escolhida = direcoes_validas[escolha_movimento - 1].lower()
             
             proximo_id = sala_atual['conexoes'][direcao_escolhida]
-            if proximo_id is not None and proximo_id in dungeon_mapa:
+            if proximo_id is not None and proximo_id in ficha['mapa']:
                 current_room_id = proximo_id
-                print(f"Você se moveu para o {direcao_escolhida}. Entrando em {dungeon_mapa[current_room_id]['nome']}...")
+                print(f"Você se moveu para o {direcao_escolhida}. Entrando em {ficha['mapa'][current_room_id]['nome']}...")
                 sleep(1) # Pequena pausa para a transição
             else:
                 print("Não há caminho nesta direção. Tente novamente.")
@@ -183,25 +183,5 @@ def explorar_dungeon(ficha):
             continue # Continua o loop para pedir nova entrada
 
 
-    # Removendo a lógica antiga de geração de eventos por sala 
-    #    evento = gerar_evento()
-    #    sleep(0.8)
-    #    if evento == 'Tesouro':
-    #        loot = evento_tesouro(ficha, sala)
-    #        if loot is not None:
-    #            guardar_item(ficha, loot)
-    #        mostra_inventario(ficha)
-    #    elif evento == "Armadilha":
-    #        resultado = evento_armadilha(ficha)
-    #        if not resultado:
-    #            print('\n==>O jogador MORREU!\n') 
-    #            return False
-    #    elif evento == "Monstro":
-    #        resultado = evento_monstro(ficha)
-    #        if not resultado:
-    #            print('\n==>O jogador MORREU!\n') 
-    #            return False
-    #    print('\nPressione um tecla avançar para a proxima Sala!')
-    #    getch()
-    #return True
+  
 
