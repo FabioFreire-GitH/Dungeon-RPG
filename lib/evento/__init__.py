@@ -1,6 +1,7 @@
 from random import randint, choice
 from lib.combate import *
 from lib.itens import *
+from lib.bestiario import *
 
 def gerar_evento():
     lista_evento = ['Tesouro', 'Armadilha', 'Monstro']
@@ -42,12 +43,11 @@ def evento_armadilha(ficha):
 
 
 def evento_monstro(ficha, monstro):
-    vida_inimigo = randint(3,5)*10
-    nome_monstro = monstro
+    dados_monstro = obter_monstro(monstro)
     print('''
             => Um MONSTRO!!! 
             => A Criatura está Furiosa e pronta para Atacar.
           
             => PREPARE-SE!        
           ''')
-    return combate(ficha, vida_inimigo, nome_monstro)
+    return combate(ficha, dados_monstro)

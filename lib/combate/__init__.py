@@ -5,9 +5,9 @@ from lib.interface import *
 from lib.itens import *
 
 
-def combate(ficha, vida_inimigo, nome_monstro):
-    pergaminho(f"⚔️ O duelo começou! Você enfrenta o temível {nome_monstro}! ⚔️\n")
-    while ficha['vida'] > 0 and vida_inimigo > 0:
+def combate(ficha, monstro):
+    pergaminho(f"⚔️ O duelo começou! Você enfrenta o temível {monstro['nome']}! ⚔️\n")
+    while ficha['vida'] > 0 and monstro['vida_atual'] > 0:
         pergaminho('\n===>Seu Turno! Escolha uma Opção:')
         if ficha["equipamento"]["arma"] is None:
             print(f'1. Ataque (com os punhos)')
@@ -18,9 +18,9 @@ def combate(ficha, vida_inimigo, nome_monstro):
         print(linha())
         #Turno Heroi
         if op == '1':
-            ataq_heroi = ficha['força'] + randint(1,4)*10
-            vida_inimigo -= ataq_heroi
-            pergaminho(f'Você avança e golpeia! Causa {ataq_heroi} de dano no {nome_monstro}.')
+            dano = max(1, (ficha['força'] + randint(1, 6)) - monstro['defesa'])
+            monstro['vida_atual'] -= dano
+            pergaminho(f"Você avança e golpeia! Causa {dano} de dano no {monstro['nome']}.")
         elif op == '2':
             item_usado = mostra_inventario(ficha)
             if not item_usado:
@@ -28,26 +28,26 @@ def combate(ficha, vida_inimigo, nome_monstro):
         else:
             pergaminho('Você hesitou e perdeu a chance de atacar!')
 
-        if vida_inimigo<=0:
+        if monstro['vida_atual']<=0:
             break
     
         #Turno NPC
-        pergaminho(f'\n==> Turno do {nome_monstro}...')
-        ataq_inimigo = randint(0, 3)*10 - ficha['defesa']
-        ficha['vida'] -= max(0, ataq_inimigo)
-        pergaminho(f' O {nome_monstro} contra-ataca e te causa {max(0, ataq_inimigo)} de dano!')
+        pergaminho(f"\n==> Turno do {monstro['nome']}...")
+        dano_monstro = max(1, (monstro['força'] + randint(1, 6)) - ficha['defesa'])
+        ficha['vida'] -= max(0, dano_monstro)
+        pergaminho(f" O {monstro['nome']} contra-ataca e te causa {max(0, dano_monstro)} de dano!")
 
         #status turno
         print(linha())
-        pergaminho(f' STATUS ATUAL | Seu HP: {max(0, ficha["vida"])} | HP do {nome_monstro}: {max(0, vida_inimigo)}')
+        pergaminho(f" STATUS ATUAL | Seu HP: {max(0, ficha['vida'])} | HP do {monstro['nome']}: {max(0, monstro['vida_atual'])}")
         print(linha())
     #resultado
     if ficha['vida'] > 0:
-        resultado = f'VITÓRIA! Você derrotou o {nome_monstro} e sobreviveu ao duelo!'
+        resultado = f"VITÓRIA! Você derrotou o {monstro['nome']} e sobreviveu ao duelo!"
         cabeçalho(resultado)
         return True
     else:
-        resultado = f'DERROTA... O {nome_monstro} foi implacável. Você caiu em combate.'
+        resultado = f"DERROTA... O {monstro['nome']} foi implacável. Você caiu em combate."
         cabeçalho(pergaminho(resultado))
         return False
     

@@ -12,7 +12,7 @@ def gerar_dungeon_mapa():
                 'oeste': None
             },
             'itens': ['moedas', 'arma', 'armadura', 'nada'],
-            'monstros': ['Rato atroz', 'Aranha', 'nada'],
+            'monstros': ['Rato atroz', 'Aranha gigante'],
             'visitada': False,
             'bonus': -10 
         },
@@ -27,7 +27,7 @@ def gerar_dungeon_mapa():
                 'oeste': None
             },
             'itens': ['moedas', 'objetos valiosos', 'cura', 'nada'],
-            'monstros': ['Rato atroz', 'Aranha', 'nada'],
+            'monstros': ['Rato atroz', 'Aranha gigante'],
             'visitada': False,
             'bonus': 0
         },
@@ -42,7 +42,7 @@ def gerar_dungeon_mapa():
                 'oeste': 1
             },
             'itens': ['moedas', 'arma', 'nada'],
-            'monstros': ['Rato atroz', 'Aranha', 'nada'],
+            'monstros': ['Rato atroz', 'Aranha gigante'],
             'visitada': False,
             'bonus': -20
         }
