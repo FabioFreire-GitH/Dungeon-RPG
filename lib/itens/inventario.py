@@ -11,7 +11,7 @@ def mostra_inventario(ficha):
         c = 1
         for item in ficha['inventario']:
             print(f'{c} - {item["nome"]}', end=' ')
-            if item['tipo'] in ('cura','armadura','arma'):
+            if item['tipo'] in ('cura','armadura','arma','buff_forca','buff_defesa'):
                 print(f'(+{item["efeito"]:>20})')
             elif item['tipo'] in ('joias','gemas','objetos valiosos','artefatos'):
                 print(f' - Valor: ({item["valor_final"]:>20})')
@@ -26,6 +26,8 @@ def mostra_inventario(ficha):
                 return equipar_item(ficha, item)
             elif item['tipo'] == 'cura':
                 return usar_item_cura(ficha, item)
+            elif item['tipo'] == 'buff_forca' or item['tipo'] == 'buff_defesa':
+                return usar_item_buff(ficha, item)
             else:
                 print('Este item não pode ser usado.')
                 return False
@@ -65,6 +67,34 @@ def usar_item_cura(ficha, item):
     else:
         print('Não é possivel usar este item!')
         return False
+    
+def usar_item_buff(ficha, item):
+    if item['tipo'] == 'buff_forca':
+        op = input(f'Deseja usar o Item ({item["nome"]})? [s/n]')
+        
+        if op == 's':
+            ficha['buff_forca_temp'] += item['efeito']
+            remover_item(ficha,item)
+            print(f'Você usou {item["nome"]} e aumentou temporariamente sua força em +{item["efeito"]}!')
+            return True
+        else:
+            print('Item não usado!')
+            return False
+    elif item['tipo'] == 'buff_defesa':
+        op = input(f'Deseja usar o Item ({item["nome"]})? [s/n]')
+        
+        if op == 's':
+            ficha['buff_defesa_temp'] += item['efeito']
+            remover_item(ficha,item)
+            print(f'Você usou {item["nome"]} e aumentou temporariamente sua defesa em +{item["efeito"]}!')
+            return True
+        else:
+            print('Item não usado!')
+            return False
+    else:
+        print('Não é possivel usar este item!')
+        return False
+
 
 
 def mostra_equipamentos(ficha):

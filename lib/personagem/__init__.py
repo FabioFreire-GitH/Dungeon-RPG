@@ -16,6 +16,12 @@ def criar_personagem():
             ficha['inventario'] = []
             ficha['equipamento'] = {'arma': None, 'armadura': None}
             ficha['mapa'] = gerar_dungeon_mapa()
+            ficha['nivel_atual'] = 1
+            ficha['xp_atual'] = 0
+            ficha['xp_prox_nivel'] = 100
+            ficha['nivel_max'] = 5
+            ficha['buff_forca_temp'] = 0
+            ficha['buff_defesa_temp'] = 0
             print(f'\nHeroi {ficha["nome"]} Criado!')
             print('\nPressione qualque tecla para continuar...')
             getch()
@@ -36,8 +42,20 @@ def mostra_status(ficha):
     print(f'Força  : {ficha["força"]}')
     print(f'Defesa : {ficha["defesa"]}')
     print(linha())
-    
 
+    print(f"Nivel  : {ficha['nivel_atual']} / {ficha['nivel_max']} máx.")
+    print(f"XP     : {ficha['xp_atual']} / {ficha['xp_prox_nivel']} Up.")
+    print(linha())
+    
+def subir_nivel(ficha):
+    ficha['nivel_atual'] += 1
+    ficha['xp_atual'] -= ficha['xp_prox_nivel']  # Sobra de XP acumula para o próximo nível
+    ficha['xp_prox_nivel'] = int(ficha['xp_prox_nivel'] * 1.5)  # Aumenta a dificuldade do próximo nível
+            
+    # Bônus de Atributos por Level Up (Evolução)
+    ficha['vida'] = 100  # Cura completamente
+    ficha['força'] += 3
+    ficha['defesa'] += 2
 
 
 

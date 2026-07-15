@@ -1,7 +1,7 @@
 from random import choice, randint
 
 ref_tesouros = ['moedas','joias','artefatos', 'gemas', 'objetos valiosos']
-ref_itens = ['cura','arma','armadura']
+ref_itens = ['cura','buff_forca','buff_defesa','arma','armadura']
 
 
 def gerar_item(tipo_item, bonus_sala=0):
@@ -14,6 +14,12 @@ def gerar_item(tipo_item, bonus_sala=0):
     elif tipo_item == 'armadura':
         tipo_armadura = ['Couro leve','Cota de Malha']
         nome_item = choice(tipo_armadura)
+    elif tipo_item == 'buff_forca':
+        tipo_buff_forca = ['Poção de Força','Poção de Fúria']
+        nome_item = choice(tipo_buff_forca)
+    elif tipo_item == 'buff_defesa':
+        tipo_buff_defesa = ['Elixir do Escudo','Elixir de Ferro']
+        nome_item = choice(tipo_buff_defesa)
     else:
         return None
     raridade = gerar_raridade(bonus_sala)
@@ -41,6 +47,16 @@ def gerar_bonus_item(nome_item, tipo_item, raridade):
             bonus = 3
         elif nome_item == 'Cota de Malha':
             bonus = 7
+    elif tipo_item == 'buff_forca':
+        if nome_item == 'Poção de Força':
+            bonus = 3
+        elif nome_item == 'Poção de Fúria':
+            bonus = 7
+    elif tipo_item == 'buff_defesa':
+        if nome_item == 'Elixir do Escudo':
+            bonus = 2
+        elif nome_item == 'Elixir de Ferro':
+            bonus = 5
     bonus_final = int(bonus * multiplicador[raridade])
     return bonus_final
 
