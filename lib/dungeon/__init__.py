@@ -4,6 +4,7 @@ from msvcrt import getch
 from lib.evento import *
 from lib.interface import *
 from .mapa import *
+from lib.bestiario import *
 
 '''
 def gerar_cenario():
@@ -75,73 +76,75 @@ def explorar_dungeon(ficha):
         # Obter a sala atual do mapa
         sala_atual = ficha['mapa'][current_room_id]
         
-        if not sala_atual['visitada']: # Se a sala ainda não foi visitada
-            pergaminho(f"Ao adentrar o {sala_atual['nome']}, você observa o ambiente...") 
-            sleep(0.5)
-
-            evento_sorteado = gerar_evento() # Gera um evento aleatório
+        if not sala_atual['intro_vista']: # Se a INTRODUÇÃO AINDA NÃO FOI VISTA
+            pergaminho(f"Ao adentrar o {sala_atual['nome']}, você observa o ambiente...")
+            sala_atual['intro_vista'] = True # MARCA que a INTRODUÇÃO FOI VISTA
             sleep(0.8)
+        else: # Se a INTRODUÇÃO JÁ FOI VISTA
+            print(f"Você retorna ao {sala_atual['nome']}. Parece familiar, você já explorou aqui antes.")
+            tecla_seguir()
 
-            if evento_sorteado == 'Tesouro':
-                # Chama a função de evento de tesouro, passando a ficha e a sala atual
-                # evento_tesouro internamente usará sala_atual['itens'] como 'loot_pool' e sala_atual['bonus']
-                loot = evento_tesouro(ficha, sala_atual) 
-                if loot is not None:
-                    guardar_item(ficha, loot) # Guarda o item/tesouro na ficha do jogador
+        evento_sorteado = gerar_evento(sala_atual) # Gera um evento aleatório
+        sleep(0.8)
 
-                    print('\nPressione qualquer tecla para ver seu inventário...')
-                    getch()
-                    mostra_inventario(ficha) # Exibe o inventário atualizado
-                    print('\nPressione qualquer tecla para continuar...')
-                    getch() # Pausa após mostrar inventário
-                else:
-                    print('Você procurou, mas não encontrou nada de valor.')
-                    tecla_seguir() # Aguarda input para continuar
+        if evento_sorteado == 'Tesouro':
+            # Chama a função de evento de tesouro, passando a ficha e a sala atual
+            # evento_tesouro internamente usará sala_atual['itens'] como 'loot_pool' e sala_atual['bonus']
+            loot = evento_tesouro(ficha, sala_atual) 
+            if loot is not None and sala_atual['loots_restantes'] > 0:
+                guardar_item(ficha, loot) # Guarda o item/tesouro na ficha do jogador
+                sala_atual['loots_restantes'] -= 1
+                print('\nPressione qualquer tecla para ver seu inventário...')
+                getch()
+                mostra_inventario(ficha) # Exibe o inventário atualizado
+                print('\nPressione qualquer tecla para continuar...')
+                getch() # Pausa após mostrar inventário
+            else:
+                print('Você procurou, mas não encontrou nada de valor.')
+                tecla_seguir() # Aguarda input para continuar
 
-            elif evento_sorteado == "Armadilha":
-                resultado = evento_armadilha(ficha) # Ativa o evento de armadilha
-                if not resultado: # Se o jogador morrer na armadilha
+        elif evento_sorteado == "Armadilha":
+            resultado = evento_armadilha(ficha) # Ativa o evento de armadilha
+            if not resultado: # Se o jogador morrer na armadilha
+                print('\n==>O Herói MORREU!\n') 
+                tecla_seguir()
+                return False # Retorna False para indicar derrota e encerrar o jogo
+            else:
+                print('\nVocê conseguiu escapar da armadilha, mas não ileso!')
+                sala_atual['armadilha_ativa'] = False
+                tecla_seguir() # Aguarda input para continuar
+
+        elif evento_sorteado == "Monstro":
+            # Verificamos se há monstros potenciais listados para esta sala
+            if sala_atual['monstros'] and sala_atual['monstros'] != ['nada']: # Evita tentar lutar contra 'nada'
+                # Apenas para exibição, escolhe um nome de monstro da lista da sala
+                nome_monstro_display = choice([m for m in sala_atual['monstros'] if m != 'nada'])
+                monstro_completo = obter_monstro(nome_monstro_display)
+                monstro_respawnable = monstro_completo['respawnable']
+                print(f"\nVocê encontra um {nome_monstro_display} no caminho!") 
+                resultado = evento_monstro(ficha, nome_monstro_display) # Inicia o combate (evento_monstro usa monstro genérico por enquanto)
+                if not resultado: # Se o jogador morrer no combate
                     print('\n==>O Herói MORREU!\n') 
                     tecla_seguir()
                     return False # Retorna False para indicar derrota e encerrar o jogo
                 else:
-                    print('\nVocê conseguiu escapar da armadilha, mas não ileso!')
-                    tecla_seguir() # Aguarda input para continuar
-
-            elif evento_sorteado == "Monstro":
-                # Verificamos se há monstros potenciais listados para esta sala
-                if sala_atual['monstros'] and sala_atual['monstros'] != ['nada']: # Evita tentar lutar contra 'nada'
-                    # Apenas para exibição, escolhe um nome de monstro da lista da sala
-                    nome_monstro_display = choice([m for m in sala_atual['monstros'] if m != 'nada']) 
-                    print(f"\nVocê encontra um {nome_monstro_display} no caminho!") 
-                    resultado = evento_monstro(ficha, nome_monstro_display) # Inicia o combate (evento_monstro usa monstro genérico por enquanto)
-                    if not resultado: # Se o jogador morrer no combate
-                        print('\n==>O Herói MORREU!\n') 
-                        tecla_seguir()
-                        return False # Retorna False para indicar derrota e encerrar o jogo
-                    else:
-                        print(f'\nVocê derrotou o {nome_monstro_display}!')
-                        if nome_monstro_display in sala_atual['monstros']:
-                            sala_atual['monstros'].remove(nome_monstro_display)
-                            if sala_atual['monstros'] is None:
-                                sala_atual['monstros'] = 'Nada'
-                        tecla_seguir()
-                        # Futuramente: Adicionar lógica aqui para remover o monstro derrotado
-                        # de `sala_atual['monstros']` para que ele não reapareça.
-                else:
-                    print('A sala está estranhamente calma... nenhum monstro apareceu.')
+                    print(f'\nVocê derrotou o {nome_monstro_display}!')
+                    if nome_monstro_display in sala_atual['monstros'] and not monstro_respawnable:
+                        sala_atual['monstros'].remove(nome_monstro_display)
+                            # Se a lista de monstros ficou vazia, definimos como ['nada']
+                        if not sala_atual['monstros']: # Checa se a lista está vazia
+                            sala_atual['monstros'] = ['nada']
                     tecla_seguir()
-            else: # Caso o evento sorteado seja 'nada' ou algo inesperado
-                print('A sala parece vazia e silenciosa.')
+            else:
+                print('A sala está estranhamente calma... nenhum monstro apareceu.')
                 tecla_seguir()
-
-            # Após o processamento dos eventos da primeira visita, marque a sala como visitada
-            sala_atual['visitada'] = True # Marca como visitada para que os eventos não se repitam
-        else:
-            # Mensagem para salas já visitadas
-            print(f"Você retorna ao {sala_atual['nome']}. Parece familiar, você já explorou aqui antes.")
+        else: # Caso o evento sorteado seja 'nada' ou algo inesperado
+            print('A sala parece vazia e silenciosa.')
             tecla_seguir()
 
+        # Após o processamento dos eventos da primeira visita, marque a sala como visitada
+         # Marca como visitada para que os eventos não se repitam
+        
         # Limpa a tela novamente para o menu de navegação, após os eventos
         limpa_tela()
         cabeçalho(f"{sala_atual['nome']}")

@@ -3,10 +3,23 @@ from lib.combate import *
 from lib.itens import *
 from lib.bestiario import *
 
-def gerar_evento():
-    lista_evento = ['Tesouro', 'Armadilha', 'Monstro']
-    #lista_evento = ['Tesouro']
-    evento_sorteado = choice(lista_evento) #sorteio com a mesma probabilidade(refletir para as proximas fases)
+def gerar_evento(sala_atual):
+    lista_eventos_disponiveis = []
+
+    if sala_atual['monstros'] and sala_atual['monstros'] != ['nada']:
+        lista_eventos_disponiveis.append('Monstro')
+    
+    if sala_atual['armadilha_ativa']: # Só adiciona armadilha se estiver ativa
+        lista_eventos_disponiveis.append('Armadilha')
+    
+    if sala_atual['loots_restantes'] > 0: # Só adiciona tesouro se houver loot
+        lista_eventos_disponiveis.append('Tesouro')
+    
+    # Se, por algum motivo, não houver nenhum evento, sempre oferecemos "Nada"
+    if not lista_eventos_disponiveis:
+        lista_eventos_disponiveis.append('Nada') # Garante que sempre haja uma opção
+
+    evento_sorteado = choice(lista_eventos_disponiveis)
     return evento_sorteado
 
 
