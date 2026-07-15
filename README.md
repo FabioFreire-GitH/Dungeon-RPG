@@ -159,6 +159,18 @@ Objetivos:
 
 ---
 
+## ✅ Fase 3 — Progressão, Monstros e Consumíveis
+
+Objetivos:
+
+* Implementar sistema de XP e Level Up.
+* Criar bestiário de monstros com atributos e balanceamento.
+* Adicionar novos consumíveis (poções de buff temporário).
+
+✔ Concluída
+
+---
+
 ## ✅ Fase 3.1 — Expansão de Conteúdo e Dinamismo
 
 Objetivos:
