@@ -159,14 +159,20 @@ Objetivos:
 
 ---
 
+## ✅ Fase 3.1 — Expansão de Conteúdo e Dinamismo
+
+Objetivos:
+
+* Ampliar o bestiário com novos monstros e adicionar o atributo 'respawnable'.
+* Ampliar o mapa da dungeon, integrando a estrutura da 'Dungeon Abandonada' e mais salas.
+* Refatorar a lógica de eventos da dungeon para respeitar flags de estado como 'intro_vista', 'armadilha_ativa' e 'loots_restantes'.
+* Implementar loots múltiplos por sala e armadilhas de uso único.
+
+✔ Concluída
+
+---
+
 ## 🔜 Próximas Fases
-
-### Fase 3
-
-* Progressão do personagem
-* Novos monstros
-* Balanceamento
-* Novos consumíveis
 
 ### Fase 4
 
